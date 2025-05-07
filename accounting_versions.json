@@ -1,0 +1,344 @@
+{
+    "version_1": {
+        "version": "1",
+        "subject": "Accounting",
+        "questions": [
+            {
+                "question_id": 1,
+                "question": "What is the accounting equation?",
+                "options": [
+                    "Assets = Liabilities + Equity",
+                    "Assets = Liabilities - Equity",
+                    "Assets = Revenue - Expenses",
+                    "Equity = Assets + Liabilities"
+                ],
+                "correct_answer": "Assets = Liabilities + Equity"
+            },
+            {
+                "question_id": 2,
+                "question": "Which of the following is a liability?",
+                "options": [
+                    "Cash",
+                    "Accounts Receivable",
+                    "Accounts Payable",
+                    "Owner's Equity"
+                ],
+                "correct_answer": "Accounts Payable"
+            },
+            {
+                "question_id": 3,
+                "question": "What does GAAP stand for?",
+                "options": [
+                    "General Agreement of Accounting Practices",
+                    "Generally Accepted Accounting Principles",
+                    "Global Accounting and Audit Practices",
+                    "Governmental Accounting and Auditing Practices"
+                ],
+                "correct_answer": "Generally Accepted Accounting Principles"
+            },
+            {
+                "question_id": 4,
+                "question": "What is the primary purpose of a balance sheet?",
+                "options": [
+                    "To show a company\u2019s revenue and expenses",
+                    "To track a company\u2019s profits",
+                    "To summarize a company\u2019s financial position at a point in time",
+                    "To calculate a company\u2019s tax obligations"
+                ],
+                "correct_answer": "To summarize a company\u2019s financial position at a point in time"
+            },
+            {
+                "question_id": 5,
+                "question": "What is the main purpose of a cash flow statement?",
+                "options": [
+                    "To show how much profit a company has made",
+                    "To summarize income and expenses",
+                    "To show the inflow and outflow of cash within a company",
+                    "To show a company\u2019s debt and liabilities"
+                ],
+                "correct_answer": "To show the inflow and outflow of cash within a company"
+            },
+            {
+                "question_id": 6,
+                "question": "Which of the following accounts is considered an asset?",
+                "options": [
+                    "Accounts Payable",
+                    "Accounts Receivable",
+                    "Capital Stock",
+                    "Retained Earnings"
+                ],
+                "correct_answer": "Accounts Receivable"
+            },
+            {
+                "question_id": 7,
+                "question": "What is depreciation?",
+                "options": [
+                    "The process of writing off an asset\u2019s value over time",
+                    "The process of selling a company asset",
+                    "The process of auditing a company\u2019s assets",
+                    "The process of increasing an asset\u2019s value"
+                ],
+                "correct_answer": "The process of writing off an asset\u2019s value over time"
+            },
+            {
+                "question_id": 8,
+                "question": "Which of the following is an example of an operating expense?",
+                "options": [
+                    "Interest expense",
+                    "Rent expense",
+                    "Income tax expense",
+                    "Sale of assets"
+                ],
+                "correct_answer": "Rent expense"
+            },
+            {
+                "question_id": 9,
+                "question": "What is accrual accounting?",
+                "options": [
+                    "Recording revenue when it is received",
+                    "Recording expenses when they are paid",
+                    "Recording transactions when they occur, regardless of cash movement",
+                    "Recording income only when cash is collected"
+                ],
+                "correct_answer": "Recording transactions when they occur, regardless of cash movement"
+            },
+            {
+                "question_id": 10,
+                "question": "Which of the following is a characteristic of a sole proprietorship?",
+                "options": [
+                    "Limited liability for owners",
+                    "Income is taxed twice",
+                    "Owner has full control over business decisions",
+                    "Ownership is transferred easily"
+                ],
+                "correct_answer": "Owner has full control over business decisions"
+            },
+            {
+                "question_id": 11,
+                "question": "What is a trial balance used for?",
+                "options": [
+                    "To verify that all accounts have been correctly calculated",
+                    "To determine a company\u2019s profitability",
+                    "To prepare the balance sheet",
+                    "To prepare tax filings"
+                ],
+                "correct_answer": "To verify that all accounts have been correctly calculated"
+            },
+            {
+                "question_id": 12,
+                "question": "Which account is increased by a debit?",
+                "options": [
+                    "Revenue",
+                    "Liabilities",
+                    "Assets",
+                    "Equity"
+                ],
+                "correct_answer": "Assets"
+            },
+            {
+                "question_id": 13,
+                "question": "Which of the following financial statements shows a company\u2019s profitability over a period?",
+                "options": [
+                    "Balance Sheet",
+                    "Income Statement",
+                    "Cash Flow Statement",
+                    "Statement of Changes in Equity"
+                ],
+                "correct_answer": "Income Statement"
+            },
+            {
+                "question_id": 14,
+                "question": "What is the main purpose of an income statement?",
+                "options": [
+                    "To report a company\u2019s financial position",
+                    "To show cash inflows and outflows",
+                    "To summarize revenues and expenses over a period",
+                    "To list company assets and liabilities"
+                ],
+                "correct_answer": "To summarize revenues and expenses over a period"
+            },
+            {
+                "question_id": 15,
+                "question": "Which of the following is considered a long-term liability?",
+                "options": [
+                    "Accounts Payable",
+                    "Loans Payable",
+                    "Income Taxes Payable",
+                    "Dividends Payable"
+                ],
+                "correct_answer": "Loans Payable"
+            }
+        ]
+    },
+    "version_2": {
+        "version": "2",
+        "subject": "Accounting",
+        "questions": [
+            {
+                "question_id": 1,
+                "question": "What is the purpose of financial accounting?",
+                "options": [
+                    "To record and summarize financial transactions",
+                    "To track personal income and expenses",
+                    "To calculate tax obligations",
+                    "To manage employee payroll"
+                ],
+                "correct_answer": "To record and summarize financial transactions"
+            },
+            {
+                "question_id": 2,
+                "question": "Which of the following is an example of a current asset?",
+                "options": [
+                    "Real estate",
+                    "Inventory",
+                    "Patent",
+                    "Equipment"
+                ],
+                "correct_answer": "Inventory"
+            },
+            {
+                "question_id": 3,
+                "question": "What is an income statement used for?",
+                "options": [
+                    "To report a company\u2019s financial position",
+                    "To calculate the company\u2019s tax obligations",
+                    "To summarize the company\u2019s revenues and expenses",
+                    "To prepare for the year-end audit"
+                ],
+                "correct_answer": "To summarize the company\u2019s revenues and expenses"
+            },
+            {
+                "question_id": 4,
+                "question": "Which of the following is an example of an intangible asset?",
+                "options": [
+                    "Machinery",
+                    "Goodwill",
+                    "Accounts Receivable",
+                    "Cash"
+                ],
+                "correct_answer": "Goodwill"
+            },
+            {
+                "question_id": 5,
+                "question": "Which of the following is true about accrual accounting?",
+                "options": [
+                    "Revenues are recognized only when cash is received",
+                    "Expenses are recognized only when cash is paid",
+                    "Revenues are recognized when earned, regardless of cash receipt",
+                    "Expenses are recognized when cash is received"
+                ],
+                "correct_answer": "Revenues are recognized when earned, regardless of cash receipt"
+            },
+            {
+                "question_id": 6,
+                "question": "What is the correct sequence of steps in the accounting cycle?",
+                "options": [
+                    "Journalizing, Posting, Adjusting, Financial Statements",
+                    "Posting, Journalizing, Adjusting, Financial Statements",
+                    "Adjusting, Financial Statements, Journalizing, Posting",
+                    "Financial Statements, Adjusting, Posting, Journalizing"
+                ],
+                "correct_answer": "Journalizing, Posting, Adjusting, Financial Statements"
+            },
+            {
+                "question_id": 7,
+                "question": "Which of the following is a common accounting principle?",
+                "options": [
+                    "Revenue Recognition Principle",
+                    "Accrual Principle",
+                    "Matching Principle",
+                    "All of the above"
+                ],
+                "correct_answer": "All of the above"
+            },
+            {
+                "question_id": 8,
+                "question": "What is the definition of a liability?",
+                "options": [
+                    "An asset owned by the company",
+                    "A financial obligation or debt owed by the company",
+                    "A source of income for the company",
+                    "A profit earned by the company"
+                ],
+                "correct_answer": "A financial obligation or debt owed by the company"
+            },
+            {
+                "question_id": 9,
+                "question": "Which of the following represents owner\u2019s equity?",
+                "options": [
+                    "Total assets minus total liabilities",
+                    "Total assets plus total liabilities",
+                    "Revenue minus expenses",
+                    "Total revenue for the period"
+                ],
+                "correct_answer": "Total assets minus total liabilities"
+            },
+            {
+                "question_id": 10,
+                "question": "What is the role of an auditor?",
+                "options": [
+                    "To prepare the financial statements",
+                    "To provide financial advice",
+                    "To review and verify the accuracy of financial statements",
+                    "To set accounting policies"
+                ],
+                "correct_answer": "To review and verify the accuracy of financial statements"
+            },
+            {
+                "question_id": 11,
+                "question": "What is an operating income?",
+                "options": [
+                    "Income from the sale of long-term assets",
+                    "Income from the company\u2019s core business operations",
+                    "Income from investments",
+                    "Income after all expenses"
+                ],
+                "correct_answer": "Income from the company\u2019s core business operations"
+            },
+            {
+                "question_id": 12,
+                "question": "What is a dividend?",
+                "options": [
+                    "A type of bond issued by a company",
+                    "A payment made to shareholders from a company\u2019s profits",
+                    "A form of employee salary",
+                    "A type of loan a company receives"
+                ],
+                "correct_answer": "A payment made to shareholders from a company\u2019s profits"
+            },
+            {
+                "question_id": 13,
+                "question": "What is a statement of changes in equity?",
+                "options": [
+                    "A report showing the company\u2019s revenue and expenses",
+                    "A report showing changes in a company\u2019s equity accounts",
+                    "A report summarizing a company\u2019s liabilities",
+                    "A report showing cash flow details"
+                ],
+                "correct_answer": "A report showing changes in a company\u2019s equity accounts"
+            },
+            {
+                "question_id": 14,
+                "question": "What does liquidity refer to?",
+                "options": [
+                    "The profitability of a company",
+                    "The ability to convert assets into cash quickly",
+                    "The amount of equity a company has",
+                    "The amount of debt a company has"
+                ],
+                "correct_answer": "The ability to convert assets into cash quickly"
+            },
+            {
+                "question_id": 15,
+                "question": "What is the purpose of internal controls in accounting?",
+                "options": [
+                    "To increase company profits",
+                    "To ensure compliance with legal requirements",
+                    "To protect assets and ensure the accuracy of financial records",
+                    "To enhance company image"
+                ],
+                "correct_answer": "To protect assets and ensure the accuracy of financial records"
+            }
+        ]
+    }
+}
