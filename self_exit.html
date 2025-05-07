@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Student Exit Exam</title>
+  <style>
+    body { font-family: Arial, sans-serif; background-color: #f2f2f2; margin: 0; padding: 0; }
+    .container { max-width: 800px; margin: auto; background: #fff; padding: 20px; border-radius: 8px; margin-top: 40px; }
+    .login, .quiz, .review, .admin-upload { display: none; }
+    .active { display: block; }
+    .question-box { margin-bottom: 20px; }
+    .navigation-buttons { display: flex; justify-content: space-between; margin-top: 20px; }
+    .timer { text-align: right; font-weight: bold; color: red; }
+    .answer-review { margin-top: 10px; }
+    .correct { color: green; }
+    .incorrect { color: red; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div id="login" class="login active">
+      <h2>Login</h2>
+      <input type="text" id="department" placeholder="Department" /><br><br>
+      <input type="text" id="username" placeholder="Username" /><br><br>
+      <input type="password" id="password" placeholder="Password" /><br><br>
+      <button onclick="login()">Login</button>
+      <p>Admin? <a href="#" onclick="showAdminUpload()">Upload Questions</a></p>
+    </div>
+
+    <div id="quiz" class="quiz">
+      <div class="timer">Time left: <span id="time">30:00</span></div>
+      <div class="question-box" id="questionBox"></div>
+      <div class="navigation-buttons">
+        <button onclick="prevQuestion()">Previous</button>
+        <button onclick="nextQuestion()">Next</button>
+        <button onclick="submitAnswer()">Submit</button>
+        <button onclick="finishQuiz()">Finish Attempt</button>
+      </div>
+    </div>
+
+    <div id="review" class="review">
+      <h2>Score Review</h2>
+      <div id="reviewContent"></div>
+      <button onclick="location.reload()">Restart</button>
+    </div>
+
+    <div id="adminUpload" class="admin-upload">
+      <h2>Upload Questions (Admin)</h2>
+      <input type="file" id="fileInput" /><br><br>
+      <button onclick="uploadQuestions()">Upload</button>
+      <button onclick="location.reload()">Back</button>
+    </div>
+  </div>
+
+  <script>
+    let allQuestions = {
+      'CSE': [
+        { q: 'What is HTML?', options: ['A programming language', 'Markup language', 'Database', 'Protocol'], answer: 1 },
+        { q: 'CSS stands for?', options: ['Cascading Style Sheets', 'Colorful Style Sheets', 'Creative Style Syntax', 'Computer Style Sheet'], answer: 0 },
+        { q: 'Which is a JavaScript framework?', options: ['Laravel', 'Django', 'React', 'Flask'], answer: 2 },
+        { q: 'Which HTML tag is used to insert an image?', options: ['<img>', '<image>', '<src>', '<pic>'], answer: 0 },
+        { q: 'What is 2 + 2?', options: ['3', '4', '5', '6'], answer: 1 },
+        { q: 'Which one is a database?', options: ['MySQL', 'React', 'Node', 'PHP'], answer: 0 },
+        { q: 'JavaScript can be used for?', options: ['Styling', 'Markup', 'Logic', 'Database'], answer: 2 },
+        { q: 'Which one is not a programming language?', options: ['Python', 'Java', 'HTML', 'C++'], answer: 2 },
+        { q: 'PHP is a?', options: ['Frontend tool', 'Backend language', 'Database', 'Design tool'], answer: 1 },
+        { q: 'Git is used for?', options: ['Graphics', 'Version control', 'Design', 'Debugging'], answer: 1 }
+      ]
+    };
+
+    let questions = [];
+    let current = 0;
+    let userAnswers = [];
+    let timer;
+    let department = '';
+
+    function login() {
+      department = document.getElementById('department').value;
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      if (username && password && allQuestions[department]) {
+        questions = allQuestions[department];
+        userAnswers = Array(questions.length).fill(null);
+        document.getElementById('login').classList.remove('active');
+        document.getElementById('quiz').classList.add('active');
+        startTimer(30 * 60);
+        renderQuestion();
+      } else {
+        alert('Invalid login or department');
+      }
+    }
+
+    function renderQuestion() {
+      const q = questions[current];
+      let html = `<h3>Question ${current + 1}</h3><p>${q.q}</p>`;
+      q.options.forEach((opt, i) => {
+        html += `<label><input type='radio' name='q' value='${i}' ${userAnswers[current] == i ? 'checked' : ''}> ${opt}</label><br>`;
+      });
+      document.getElementById('questionBox').innerHTML = html;
+    }
+
+    function nextQuestion() { if (current < questions.length - 1) { current++; renderQuestion(); } }
+    function prevQuestion() { if (current > 0) { current--; renderQuestion(); } }
+    function submitAnswer() {
+      const selected = document.querySelector('input[name="q"]:checked');
+      if (selected) {
+        userAnswers[current] = parseInt(selected.value);
+        alert('Answer saved.');
+      } else {
+        alert('Please select an answer.');
+      }
+    }
+
+    function finishQuiz() {
+      document.getElementById('quiz').classList.remove('active');
+      document.getElementById('review').classList.add('active');
+      let correct = 0;
+      let reviewHTML = '';
+      questions.forEach((q, i) => {
+        const userAnswer = userAnswers[i];
+        const correctAnswer = q.answer;
+        const isCorrect = userAnswer === correctAnswer;
+        if (isCorrect) correct++;
+        reviewHTML += `<div class='answer-review'>
+          <strong>Q${i + 1}:</strong> ${q.q}<br>
+          Your Answer: <span class='${isCorrect ? 'correct' : 'incorrect'}'>${q.options[userAnswer] || 'No answer'}</span><br>
+          Correct Answer: <span class='correct'>${q.options[correctAnswer]}</span><br>
+        </div><hr>`;
+      });
+      reviewHTML = `<p>You scored ${correct} out of ${questions.length} (${Math.round((correct / questions.length) * 100)}%)</p>` + reviewHTML;
+      document.getElementById('reviewContent').innerHTML = reviewHTML;
+    }
+
+    function startTimer(seconds) {
+      timer = setInterval(() => {
+        if (seconds <= 0) {
+          clearInterval(timer);
+          finishQuiz();
+        } else {
+          const min = Math.floor(seconds / 60);
+          const sec = seconds % 60;
+          document.getElementById('time').innerText = `${min}:${sec < 10 ? '0' : ''}${sec}`;
+          seconds--;
+        }
+      }, 1000);
+    }
+
+    function showAdminUpload() {
+      document.getElementById('login').classList.remove('active');
+      document.getElementById('adminUpload').classList.add('active');
+    }
+
+    function uploadQuestions() {
+      const file = document.getElementById('fileInput').files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          try {
+            const data = JSON.parse(e.target.result);
+            allQuestions = data;
+            alert('Questions uploaded successfully! Reload to login.');
+          } catch (error) {
+            alert('Invalid JSON format.');
+          }
+        };
+        reader.readAsText(file);
+      }
+    }
+  </script>
+</body>
+</html>
