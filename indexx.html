@@ -294,7 +294,7 @@ function showSummary() {
   show('summary');
   let html = '';
   questions.forEach((q, i) => {
-    html += `<p>Q${i+1}: ${userAnswers[i]!=null?'✅':'❌'} ${flagged[i]?'🚩':''}</p>`;
+    html += `<p>Q${i+1}: ${userAnswers[i]!=null?'✅ Answer Seved':'❌ Answer Not Saved'} ${flagged[i]?'🚩':''}</p>`;
   });
   document.getElementById('summaryContent').innerHTML = html;
 }
