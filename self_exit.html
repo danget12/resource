@@ -1,20 +1,119 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Student Exit Exam</title>
   <style>
-    body { font-family: Arial, sans-serif; background-color: #f2f2f2; margin: 0; padding: 0; }
-    .container { max-width: 800px; margin: auto; background: #fff; padding: 20px; border-radius: 8px; margin-top: 40px; }
-    .login, .quiz, .review, .admin-upload { display: none; }
-    .active { display: block; }
-    .question-box { margin-bottom: 20px; }
-    .navigation-buttons { display: flex; justify-content: space-between; margin-top: 20px; }
-    .timer { text-align: right; font-weight: bold; color: red; }
-    .answer-review { margin-top: 10px; }
-    .correct { color: green; }
-    .incorrect { color: red; }
+    body {
+      font-family: 'Georgia', serif;
+      background-color: #f9f9f9;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+    .container {
+      display: flex;
+      max-width: 1200px;
+      margin: auto;
+      padding: 20px;
+    }
+    .left-panel, .right-panel {
+      width: 20%;
+      padding: 15px;
+      background-color: #f0f4f8;
+      border-radius: 6px;
+    }
+    .main-panel {
+      width: 60%;
+      background: #fff;
+      padding: 30px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    }
+    h2, h3, h4 {
+      color: #003366;
+    }
+    input, select, button {
+      width: 100%;
+      padding: 10px;
+      margin: 5px 0 15px;
+      font-size: 16px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      font-family: 'Georgia', serif;
+    }
+    button {
+      background-color: #003366;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background-color: #0055a5;
+    }
+    .timer {
+      text-align: right;
+      font-weight: bold;
+      color: #aa0000;
+      margin-bottom: 20px;
+    }
+    .question-box {
+      margin-bottom: 20px;
+      padding: 15px;
+      border: 1px solid #ccc;
+      background-color: #fdfdfd;
+      border-radius: 6px;
+    }
+    .navigation-buttons {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .question-nav span {
+      display: inline-block;
+      width: 30px;
+      height: 30px;
+      line-height: 30px;
+      text-align: center;
+      margin: 5px;
+      border-radius: 4px;
+      border: 1px solid #aaa;
+      cursor: pointer;
+      font-weight: bold;
+      color: #003366;
+    }
+    .question-nav .answered {
+      background-color: #cce5ff;
+    }
+    .question-nav .flagged {
+      border: 2px solid red;
+    }
+    .flag-btn {
+      background-color: #ffcc00;
+      color: black;
+      font-weight: bold;
+      width: 100%;
+    }
+    .review, .summary {
+      padding-top: 10px;
+    }
+    .answer-review {
+      margin-top: 10px;
+      padding: 10px;
+      background-color: #f4f4f4;
+      border-radius: 4px;
+      border-left: 5px solid #003366;
+    }
+    .correct {
+      color: green;
+      font-weight: bold;
+    }
+    .incorrect {
+      color: red;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
