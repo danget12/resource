@@ -185,9 +185,180 @@ let allQuestions = {
   }
 };
 let studentAccounts = {
-  CSE: [{ username: "demo", password: "1234" }], Management: [], Accounting: [], Economics: []
+  CSE: [{ username: "demo", password: "1234" }], Management: [], Accounting: [ {username: "demo", password: "1234" }], Economics: []
 };
-let questions = [], current = 0, userAnswers = [], flagged = [], timer, department = "";
+let questions = [{
+  "version": "1",
+  "subject": "Accounting",
+  "questions": [
+    {
+      "question_id": 1,
+      "question": "What is the accounting equation?",
+      "options": [
+        "Assets = Liabilities + Equity",
+        "Assets = Liabilities - Equity",
+        "Assets = Revenue - Expenses",
+        "Equity = Assets + Liabilities"
+      ],
+      "correct_answer": "Assets = Liabilities + Equity"
+    },
+    {
+      "question_id": 2,
+      "question": "Which of the following is a liability?",
+      "options": [
+        "Cash",
+        "Accounts Receivable",
+        "Accounts Payable",
+        "Owner's Equity"
+      ],
+      "correct_answer": "Accounts Payable"
+    },
+    {
+      "question_id": 3,
+      "question": "What does GAAP stand for?",
+      "options": [
+        "General Agreement of Accounting Practices",
+        "Generally Accepted Accounting Principles",
+        "Global Accounting and Audit Practices",
+        "Governmental Accounting and Auditing Practices"
+      ],
+      "correct_answer": "Generally Accepted Accounting Principles"
+    },
+    {
+      "question_id": 4,
+      "question": "What is the primary purpose of a balance sheet?",
+      "options": [
+        "To show a company’s revenue and expenses",
+        "To track a company’s profits",
+        "To summarize a company’s financial position at a point in time",
+        "To calculate a company’s tax obligations"
+      ],
+      "correct_answer": "To summarize a company’s financial position at a point in time"
+    },
+    {
+      "question_id": 5,
+      "question": "What is the main purpose of a cash flow statement?",
+      "options": [
+        "To show how much profit a company has made",
+        "To summarize income and expenses",
+        "To show the inflow and outflow of cash within a company",
+        "To show a company’s debt and liabilities"
+      ],
+      "correct_answer": "To show the inflow and outflow of cash within a company"
+    },
+    {
+      "question_id": 6,
+      "question": "Which of the following accounts is considered an asset?",
+      "options": [
+        "Accounts Payable",
+        "Accounts Receivable",
+        "Capital Stock",
+        "Retained Earnings"
+      ],
+      "correct_answer": "Accounts Receivable"
+    },
+    {
+      "question_id": 7,
+      "question": "What is depreciation?",
+      "options": [
+        "The process of writing off an asset’s value over time",
+        "The process of selling a company asset",
+        "The process of auditing a company’s assets",
+        "The process of increasing an asset’s value"
+      ],
+      "correct_answer": "The process of writing off an asset’s value over time"
+    },
+    {
+      "question_id": 8,
+      "question": "Which of the following is an example of an operating expense?",
+      "options": [
+        "Interest expense",
+        "Rent expense",
+        "Income tax expense",
+        "Sale of assets"
+      ],
+      "correct_answer": "Rent expense"
+    },
+    {
+      "question_id": 9,
+      "question": "What is accrual accounting?",
+      "options": [
+        "Recording revenue when it is received",
+        "Recording expenses when they are paid",
+        "Recording transactions when they occur, regardless of cash movement",
+        "Recording income only when cash is collected"
+      ],
+      "correct_answer": "Recording transactions when they occur, regardless of cash movement"
+    },
+    {
+      "question_id": 10,
+      "question": "Which of the following is a characteristic of a sole proprietorship?",
+      "options": [
+        "Limited liability for owners",
+        "Income is taxed twice",
+        "Owner has full control over business decisions",
+        "Ownership is transferred easily"
+      ],
+      "correct_answer": "Owner has full control over business decisions"
+    },
+    {
+      "question_id": 11,
+      "question": "What is a trial balance used for?",
+      "options": [
+        "To verify that all accounts have been correctly calculated",
+        "To determine a company’s profitability",
+        "To prepare the balance sheet",
+        "To prepare tax filings"
+      ],
+      "correct_answer": "To verify that all accounts have been correctly calculated"
+    },
+    {
+      "question_id": 12,
+      "question": "Which account is increased by a debit?",
+      "options": [
+        "Revenue",
+        "Liabilities",
+        "Assets",
+        "Equity"
+      ],
+      "correct_answer": "Assets"
+    },
+    {
+      "question_id": 13,
+      "question": "Which of the following financial statements shows a company’s profitability over a period?",
+      "options": [
+        "Balance Sheet",
+        "Income Statement",
+        "Cash Flow Statement",
+        "Statement of Changes in Equity"
+      ],
+      "correct_answer": "Income Statement"
+    },
+    {
+      "question_id": 14,
+      "question": "What is the main purpose of an income statement?",
+      "options": [
+        "To report a company’s financial position",
+        "To show cash inflows and outflows",
+        "To summarize revenues and expenses over a period",
+        "To list company assets and liabilities"
+      ],
+      "correct_answer": "To summarize revenues and expenses over a period"
+    },
+    {
+      "question_id": 15,
+      "question": "Which of the following is considered a long-term liability?",
+      "options": [
+        "Accounts Payable",
+        "Loans Payable",
+        "Income Taxes Payable",
+        "Dividends Payable"
+      ],
+      "correct_answer": "Loans Payable"
+    }
+  ]
+}
+], current = 0, userAnswers = [], flagged = [], timer, department = "";
 
 function login() {
   department = document.getElementById('department').value;
