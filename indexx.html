@@ -1,2 +1,185 @@
+
 <!DOCTYPE html>
-<!-- Replace this comment with the full HTML content you previously created -->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Exit Exam</title>
+  <style>
+    body { font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 0; }
+    .container { display: flex; max-width: 1200px; margin: auto; padding: 20px; }
+    .left-panel, .right-panel { width: 20%; padding: 10px; }
+    .main-panel { width: 60%; background: #fff; padding: 20px; border-radius: 8px; }
+    .login, .quiz, .review, .admin-upload, .summary { display: none; }
+    .active { display: block; }
+    .question-box { margin-bottom: 20px; }
+    .navigation-buttons { display: flex; justify-content: space-between; margin-top: 20px; }
+    .timer { text-align: right; font-weight: bold; color: red; }
+    .question-nav span { display: inline-block; margin: 5px; padding: 10px; border: 1px solid #ccc; border-radius: 4px; cursor: pointer; }
+    .question-nav .answered { background-color: #ccc; }
+    .question-nav .flagged { border: 2px solid red; }
+    .answer-review { margin-top: 10px; }
+    .correct { color: green; }
+    .incorrect { color: red; }
+    .flag-btn { margin-bottom: 15px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="left-panel">
+      <button class="flag-btn" onclick="toggleFlag()">Flag/Unflag Question</button>
+    </div>
+    <div class="main-panel">
+      <div id="login" class="login active">
+        <h2>Login</h2>
+        <select id="department">
+          <option value="">Select Department</option>
+          <option value="CSE">CSE</option>
+          <option value="Management">Management</option>
+          <option value="Accounting">Accounting</option>
+          <option value="Economics">Economics</option>
+        </select><br><br>
+        <input type="text" id="username" placeholder="Username"><br><br>
+        <input type="password" id="password" placeholder="Password"><br><br>
+        <button onclick="login()">Login</button>
+        <p>Admin? <a href="#" onclick="showAdminUpload()">Upload Questions</a></p>
+      </div>
+      <div id="quiz" class="quiz">
+        <div class="timer">Time left: <span id="time">30:00</span></div>
+        <div class="question-box" id="questionBox"></div>
+        <div class="navigation-buttons">
+          <button onclick="prevQuestion()">Previous</button>
+          <button onclick="nextQuestion()">Next</button>
+          <button onclick="submitAnswer()">Submit</button>
+          <button onclick="showSummary()">Finish Attempt</button>
+        </div>
+      </div>
+      <div id="summary" class="summary">
+        <h2>Finish Attempt</h2>
+        <div id="summaryContent"></div>
+        <button onclick="backToAttempt()">Back to Attempt</button>
+        <button onclick="confirmSubmit()">Submit</button>
+      </div>
+      <div id="review" class="review">
+        <h2>Score Review</h2>
+        <div id="reviewContent"></div>
+        <button onclick="location.reload()">Restart</button>
+      </div>
+      <div id="adminUpload" class="admin-upload">
+        <h2>Admin Login</h2>
+        <input type="text" id="adminUser" placeholder="Username"><br><br>
+        <input type="password" id="adminPass" placeholder="Password"><br><br>
+        <input type="file" id="fileInput"><br><br>
+        <button onclick="uploadQuestions()">Upload Questions</button>
+        <button onclick="location.reload()">Back</button>
+      </div>
+    </div>
+    <div class="right-panel">
+      <h4>Question Navigation</h4>
+      <div id="questionNav" class="question-nav"></div>
+    </div>
+  </div>
+<script>
+let allQuestions = {
+  CSE: [
+    { q: "What is HTML?", options: ["Programming", "Markup", "Database", "Protocol"], answer: 1 },
+    { q: "2+2?", options: ["3", "4", "5", "6"], answer: 1 }
+  ]
+};
+let questions = [], current = 0, userAnswers = [], flagged = [], timer, department = "";
+
+function login() {
+  department = document.getElementById('department').value;
+  let u = document.getElementById('username').value;
+  let p = document.getElementById('password').value;
+  if (u && p && allQuestions[department]) {
+    questions = allQuestions[department];
+    userAnswers = Array(questions.length).fill(null);
+    flagged = Array(questions.length).fill(false);
+    show('quiz');
+    startTimer(30 * 60);
+    renderQuestion();
+    renderNav();
+  } else alert('Invalid login');
+}
+
+function renderQuestion() {
+  const q = questions[current];
+  let html = `<h3>Q${current+1}</h3><p>${q.q}</p>`;
+  q.options.forEach((opt,i)=>{
+    html += `<label><input type='radio' name='q' value='${i}' ${userAnswers[current]==i?'checked':''}> ${opt}</label><br>`;
+  });
+  document.getElementById('questionBox').innerHTML = html;
+  renderNav();
+}
+
+function nextQuestion() { if(current<questions.length-1){current++;renderQuestion();} }
+function prevQuestion() { if(current>0){current--;renderQuestion();} }
+function submitAnswer() {
+  let sel = document.querySelector('input[name="q"]:checked');
+  if(sel){ userAnswers[current]=parseInt(sel.value); alert('Saved'); renderNav(); }
+}
+
+function toggleFlag(){ flagged[current]=!flagged[current]; renderNav(); alert(flagged[current]?'Flagged!':'Unflagged!'); }
+
+function renderNav(){
+  let html='';
+  for(let i=0;i<questions.length;i++){
+    let cls='';
+    if(userAnswers[i]!=null) cls+='answered ';
+    if(flagged[i]) cls+='flagged';
+    html += `<span class='${cls}' onclick='goTo(${i})'>${i+1}</span>`;
+  }
+  document.getElementById('questionNav').innerHTML = html;
+}
+
+function goTo(i){ current=i; renderQuestion(); }
+function showSummary(){
+  show('summary');
+  let html='';
+  questions.forEach((q,i)=>{
+    html += `<p>Q${i+1}: ${userAnswers[i]!=null?'✅':'❌'} ${flagged[i]?'🚩':''}</p>`;
+  });
+  document.getElementById('summaryContent').innerHTML = html;
+}
+function backToAttempt(){ show('quiz'); renderQuestion(); }
+function confirmSubmit(){ if(confirm("Are you sure you want to submit?")) finishQuiz(); }
+function finishQuiz(){
+  show('review');
+  let score=0, html='';
+  questions.forEach((q,i)=>{
+    let ua=userAnswers[i];
+    let ca=q.answer;
+    if(ua===ca) score++;
+    html += `<div class='answer-review'>Q${i+1}: ${q.q}<br> Your: <span class='${ua===ca?'correct':'incorrect'}'>${q.options[ua]||'No answer'}</span><br> Correct: <span class='correct'>${q.options[ca]}</span><br></div><hr>`;
+  });
+  html = `<p>You scored ${score}/${questions.length} (${Math.round(score/questions.length*100)}%)</p>` + html;
+  document.getElementById('reviewContent').innerHTML = html;
+}
+function startTimer(secs){
+  timer=setInterval(()=>{
+    if(secs<=0){ clearInterval(timer); finishQuiz(); } else {
+      let m=Math.floor(secs/60), s=secs%60;
+      document.getElementById('time').innerText=`${m}:${s<10?'0':''}${s}`; secs--;} },1000);
+}
+function showAdminUpload(){ show('adminUpload'); }
+function uploadQuestions(){
+  let u=document.getElementById('adminUser').value;
+  let p=document.getElementById('adminPass').value;
+  if(u==="admin"&&p==="admin123"){
+    let file=document.getElementById('fileInput').files[0];
+    let reader=new FileReader();
+    reader.onload=(e)=>{
+      try{ allQuestions=JSON.parse(e.target.result); alert('Uploaded! Reload to apply.'); }
+      catch{ alert('Invalid file'); }
+    };
+    reader.readAsText(file);
+  } else alert('Unauthorized');
+}
+function show(id){
+  document.querySelectorAll('.login,.quiz,.review,.admin-upload,.summary').forEach(el=>el.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+</script>
+</body>
+</html>
