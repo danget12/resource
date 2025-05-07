@@ -182,15 +182,9 @@ let allQuestions = {
       { q: "What is HTML?", options: ["Programming", "Markup", "Database", "Protocol"], answer: 1 },
       { q: "2+2?", options: ["3", "4", "5", "6"], answer: 1 }
     ]
-  }
-};
-let studentAccounts = {
-  CSE: [{ username: "demo", password: "1234" }], Management: [], Accounting: [ {username: "demo", password: "1234" }], Economics: []
-};
-let questions = [{
-  "version": "1",
-  "subject": "Accounting",
-  "questions": [
+  },
+  Accounting: {
+v1: [
     {
       "question_id": 1,
       "question": "What is the accounting equation?",
@@ -358,7 +352,11 @@ let questions = [{
     }
   ]
 }
-], current = 0, userAnswers = [], flagged = [], timer, department = "";
+};
+let studentAccounts = {
+  CSE: [{ username: "demo", password: "1234" }], Management: [], Accounting: [ {username: "demo", password: "1234" }], Economics: []
+};
+let questions = [], current = 0, userAnswers = [], flagged = [], timer, department = "";
 
 function login() {
   department = document.getElementById('department').value;
