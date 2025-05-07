@@ -1,8 +1,9 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Student Exit Exam</title>
   <style>
     body {
@@ -23,6 +24,7 @@
       padding: 15px;
       background-color: #f0f4f8;
       border-radius: 6px;
+      display: none;
     }
     .main-panel {
       width: 60%;
@@ -106,24 +108,16 @@
       border-radius: 4px;
       border-left: 5px solid #003366;
     }
-    .correct {
-      color: green;
-      font-weight: bold;
-    }
-    .incorrect {
-      color: red;
-      font-weight: bold;
-    }
+    .correct { color: green; font-weight: bold; }
+    .incorrect { color: red; font-weight: bold; }
   </style>
 </head>
-
 <body>
   <div class="container">
-    <div class="left-panel">
+    <div class="left-panel" id="leftPanel">
       <button class="flag-btn" onclick="toggleFlag()">Flag/Unflag Question</button>
     </div>
     <div class="main-panel">
-      <!-- Login Section -->
       <div id="login" class="login active">
         <h2>Login</h2>
         <select id="department">
@@ -132,151 +126,200 @@
           <option value="Management">Management</option>
           <option value="Accounting">Accounting</option>
           <option value="Economics">Economics</option>
-        </select><br><br>
-        <input type="text" id="username" placeholder="Username"><br><br>
-        <input type="password" id="password" placeholder="Password"><br><br>
+        </select>
+        <input type="text" id="username" placeholder="Username">
+        <input type="password" id="password" placeholder="Password">
+        <select id="questionVersion">
+          <option value="">Select Question Set</option>
+          <option value="v1">Version 1</option>
+          <option value="v2">Version 2</option>
+        </select>
         <button onclick="login()">Login</button>
-        <p>Admin? <a href="#" onclick="showAdminUpload()">Upload Questions</a></p>
       </div>
-
-      <!-- Quiz Section -->
       <div id="quiz" class="quiz" style="display:none;">
         <div class="timer">Time left: <span id="time">30:00</span></div>
         <div class="question-box" id="questionBox"></div>
-        <div class="navigation-buttons">
-          <button onclick="prevQuestion()">Previous</button>
-          <button onclick="nextQuestion()">Next</button>
-          <button onclick="submitAnswer()">Submit</button>
-          <button onclick="showSummary()">Finish Attempt</button>
-        </div>
       </div>
-
-      <!-- Summary Section -->
       <div id="summary" class="summary" style="display:none;">
         <h2>Finish Attempt</h2>
         <div id="summaryContent"></div>
         <button onclick="backToAttempt()">Back to Attempt</button>
         <button onclick="confirmSubmit()">Submit</button>
       </div>
-
-      <!-- Admin Upload Section -->
+      <div id="review" class="review" style="display:none;">
+        <h2>Score Review</h2>
+        <div id="reviewContent"></div>
+        <button onclick="location.reload()">Restart</button>
+      </div>
       <div id="adminUpload" class="admin-upload" style="display:none;">
-        <h2>Admin Login</h2>
-        <input type="text" id="adminUser" placeholder="Username"><br><br>
-        <input type="password" id="adminPass" placeholder="Password"><br><br>
-        <input type="file" id="fileInput"><br><br>
+        <h2>Admin Panel</h2>
+        <input type="file" id="fileInput"><br>
         <button onclick="uploadQuestions()">Upload Questions</button>
-        <button onclick="location.reload()">Back</button>
+        <hr>
+        <h3>Add Student Account</h3>
+        <select id="newStudentDept">
+          <option value="">Select Department</option>
+          <option value="CSE">CSE</option>
+          <option value="Management">Management</option>
+          <option value="Accounting">Accounting</option>
+          <option value="Economics">Economics</option>
+        </select>
+        <input type="text" id="newStudentUser" placeholder="Student Username">
+        <input type="password" id="newStudentPass" placeholder="Student Password">
+        <button onclick="addStudent()">Add Student</button>
       </div>
     </div>
-
-    <div class="right-panel">
+    <div class="right-panel" id="rightPanel">
       <h4>Question Navigation</h4>
       <div id="questionNav" class="question-nav"></div>
+      <button onclick="showSummary()">Finish Attempt</button>
     </div>
   </div>
-
 <script>
 let allQuestions = {
-  CSE: [
-    { q: "What is HTML?", options: ["Programming", "Markup", "Database", "Protocol"], answer: 1 },
-    { q: "2+2?", options: ["3", "4", "5", "6"], answer: 1 }
-  ]
+  CSE: {
+    v1: [
+      { q: "What is HTML?", options: ["Programming", "Markup", "Database", "Protocol"], answer: 1 },
+      { q: "2+2?", options: ["3", "4", "5", "6"], answer: 1 }
+    ]
+  }
+};
+let studentAccounts = {
+  CSE: [], Management: [], Accounting: [], Economics: []
 };
 let questions = [], current = 0, userAnswers = [], flagged = [], timer, department = "";
 
 function login() {
   department = document.getElementById('department').value;
+  let version = document.getElementById('questionVersion').value;
   let u = document.getElementById('username').value;
   let p = document.getElementById('password').value;
-  if (u && p && allQuestions[department]) {
-    questions = allQuestions[department];
+
+  if (u === "admin" && p === "admin123") {
+    show('adminUpload');
+    document.getElementById('leftPanel').style.display = 'none';
+    document.getElementById('rightPanel').style.display = 'none';
+    return;
+  }
+
+  let valid = studentAccounts[department]?.some(acc => acc.username === u && acc.password === p);
+  if (valid && allQuestions[department] && allQuestions[department][version]) {
+    questions = allQuestions[department][version];
     userAnswers = Array(questions.length).fill(null);
     flagged = Array(questions.length).fill(false);
     show('quiz');
+    document.getElementById('leftPanel').style.display = 'block';
+    document.getElementById('rightPanel').style.display = 'block';
     startTimer(30 * 60);
     renderQuestion();
     renderNav();
-    document.getElementById('login').style.display = 'none';
-  } else alert('Invalid login');
+  } else {
+    alert('Invalid credentials or question set not found.');
+  }
 }
 
 function renderQuestion() {
   const q = questions[current];
   let html = `<h3>Q${current+1}</h3><p>${q.q}</p>`;
-  q.options.forEach((opt,i)=> {
-    html += `<label><input type='radio' name='q' value='${i}' ${userAnswers[current]==i?'checked':''}> ${opt}</label><br>`;
+  q.options.forEach((opt, i) => {
+    html += `<label><input type='radio' name='q' value='${i}' ${userAnswers[current] === i ? 'checked' : ''} onchange='submitAnswer(${i})'> ${opt}</label><br>`;
   });
   document.getElementById('questionBox').innerHTML = html;
   renderNav();
 }
 
-function nextQuestion() { if(current<questions.length-1){current++;renderQuestion();} }
-function prevQuestion() { if(current>0){current--;renderQuestion();} }
-function submitAnswer() {
-  let sel = document.querySelector('input[name="q"]:checked');
-  if(sel){ userAnswers[current]=parseInt(sel.value); alert('Saved'); renderNav(); }
-}
+function nextQuestion() { if (current < questions.length - 1) { current++; renderQuestion(); } }
+function prevQuestion() { if (current > 0) { current--; renderQuestion(); } }
+function submitAnswer(val) { userAnswers[current] = val; renderNav(); }
 
-function toggleFlag(){ flagged[current]=!flagged[current]; renderNav(); alert(flagged[current]?'Flagged!':'Unflagged!'); }
+function toggleFlag() { flagged[current] = !flagged[current]; renderNav(); }
 
-function renderNav(){
-  let html='';
-  for(let i=0;i<questions.length;i++){
-    let cls='';
-    if(userAnswers[i]!=null) cls+='answered ';
-    if(flagged[i]) cls+='flagged';
-    html += `<span class='${cls}' onclick='goTo(${i})'>${i+1}</span>`;
+function renderNav() {
+  let html = '';
+  for (let i = 0; i < questions.length; i++) {
+    let cls = '';
+    if (userAnswers[i] != null) cls += 'answered ';
+    if (flagged[i]) cls += 'flagged';
+    html += `<span class='${cls}' onclick='goTo(${i})'>${i + 1}</span>`;
   }
   document.getElementById('questionNav').innerHTML = html;
 }
 
-function goTo(i){ current=i; renderQuestion(); }
-function showSummary(){
+function goTo(i) { current = i; renderQuestion(); }
+function showSummary() {
   show('summary');
-  let html='';
-  questions.forEach((q,i)=>{
+  let html = '';
+  questions.forEach((q, i) => {
     html += `<p>Q${i+1}: ${userAnswers[i]!=null?'✅':'❌'} ${flagged[i]?'🚩':''}</p>`;
   });
   document.getElementById('summaryContent').innerHTML = html;
 }
-function backToAttempt(){ show('quiz'); renderQuestion(); }
-function confirmSubmit(){ if(confirm("Are you sure you want to submit?")) finishQuiz(); }
-function finishQuiz(){
+function backToAttempt() { show('quiz'); renderQuestion(); }
+function confirmSubmit() { if (confirm("Are you sure you want to submit?")) finishQuiz(); }
+function finishQuiz() {
   show('review');
-  let score=0, html='';
-  questions.forEach((q,i)=>{
-    let ua=userAnswers[i];
-    let ca=q.answer;
-    if(ua===ca) score++;
-    html += `<div class='answer-review'>Q${i+1}: ${q.q}<br> Your: <span class='${ua===ca?'correct':'incorrect'}'>${q.options[ua]||'No answer'}</span><br> Correct: <span class='correct'>${q.options[ca]}</span><br></div><hr>`;
+  let score = 0, html = '';
+  questions.forEach((q, i) => {
+    let ua = userAnswers[i];
+    let ca = q.answer;
+    if (ua === ca) score++;
+    html += `<div class='answer-review'>Q${i+1}: ${q.q}<br> Your: <span class='${ua === ca ? 'correct' : 'incorrect'}'>${q.options[ua] || 'No answer'}</span><br> Correct: <span class='correct'>${q.options[ca]}</span><br></div><hr>`;
   });
   html = `<p>You scored ${score}/${questions.length} (${Math.round(score/questions.length*100)}%)</p>` + html;
   document.getElementById('reviewContent').innerHTML = html;
 }
-function startTimer(secs){
-  timer=setInterval(()=> {
-    if(secs<=0){ clearInterval(timer); finishQuiz(); } else {
-      let m=Math.floor(secs/60), s=secs%60;
-      document.getElementById('time').innerText=`${m}:${s<10?'0':''}${s}`; secs--;} },1000);
+
+function startTimer(secs) {
+  timer = setInterval(() => {
+    if (secs <= 0) { clearInterval(timer); finishQuiz(); }
+    else {
+      let m = Math.floor(secs / 60), s = secs % 60;
+      document.getElementById('time').innerText = `${m}:${s < 10 ? '0' : ''}${s}`;
+      secs--;
+    }
+  }, 1000);
 }
-function showAdminUpload(){ show('adminUpload'); }
-function uploadQuestions(){
-  let u=document.getElementById('adminUser').value;
-  let p=document.getElementById('adminPass').value;
-  if(u==="admin"&&p==="admin123"){
-    let file=document.getElementById('fileInput').files[0];
-    let reader=new FileReader();
-    reader.onload=(e)=>{
-      try{ allQuestions=JSON.parse(e.target.result); alert('Uploaded! Reload to apply.'); }
-      catch{ alert('Invalid file'); }
-    };
-    reader.readAsText(file);
-  } else alert('Unauthorized');
+
+function uploadQuestions() {
+  let file = document.getElementById('fileInput').files[0];
+  if (!file) return alert("No file selected.");
+  let reader = new FileReader();
+  reader.onload = (e) => {
+    try {
+      allQuestions = JSON.parse(e.target.result);
+      alert("Questions uploaded successfully!");
+    } catch {
+      alert("Invalid JSON format.");
+    }
+  };
+  reader.readAsText(file);
 }
-function show(id){
-  document.querySelectorAll('.login,.quiz,.review,.admin-upload,.summary').forEach(el=>el.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
+
+function addStudent() {
+  let dept = document.getElementById('newStudentDept').value;
+  let user = document.getElementById('newStudentUser').value;
+  let pass = document.getElementById('newStudentPass').value;
+
+  if (!dept || !user || !pass) {
+    alert("Fill all fields.");
+    return;
+  }
+  if (!studentAccounts[dept]) studentAccounts[dept] = [];
+  if (studentAccounts[dept].some(s => s.username === user)) {
+    alert("Username already exists in that department.");
+    return;
+  }
+  studentAccounts[dept].push({ username: user, password: pass });
+  alert("Student added successfully!");
+  document.getElementById('newStudentUser').value = "";
+  document.getElementById('newStudentPass').value = "";
+}
+
+function show(id) {
+  ['login', 'quiz', 'summary', 'review', 'adminUpload'].forEach(el => {
+    document.getElementById(el).style.display = 'none';
+  });
+  document.getElementById(id).style.display = 'block';
 }
 </script>
 </body>
