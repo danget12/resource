@@ -515,7 +515,7 @@ function renderQuestion() {
   const q = questions[current];
   let html = `<h3>Q${current+1}</h3><p>${q.q}</p>`;
   q.options.forEach((opt, i) => {
-    html += `<label><input type='radio' name='q' value='${i}' ${userAnswers[current] === i ? 'checked' : ''} onchange='submitAnswer(${i})'> ${opt}</label><br>`;
+    html += `<label border=1;><input type='radio' name='q' value='${i}' ${userAnswers[current] === i ? 'checked' : ''} onchange='submitAnswer(${i})'> ${opt}</label><br>`;
   });
   document.getElementById('questionBox').innerHTML = html;
   renderNav();
